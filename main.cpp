@@ -88,21 +88,28 @@ bool mantissa(const char numString[], int& numerator, int& denominator)
     return true;
 }
 //--
-bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
-{
-    //you will have to come up with an algorithm to add the two numbers
-    //hard coded return value to make the main() work
-    result[0] = '4';
-    result[1] = '.';
-    result[2] = '1';
-    result[3] = '6';
-    result[4] = '6';
-    result[5] = '6';
-    result[6] = '6';
-    result[7] = '6';
-    result[8] = '6';
-    result[9] = '\0';
+bool add(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+{    
+    // Find common denominator and scale numerators
+    int commDenom = denominator1 * denominator2;
+    int num1_scaled = numerator1 * denominator2;
+    int num2_scaled = numerator2 * denominator1;
 
+    // Add characteristics
+    int charSum = char1 + char2;
+
+    // Add fractions
+    int fracSum = num1_scaled + num2_scaled;
+
+    // Normalize result
+    charSum += fracSum / commDenom; // Add whole part from fraction sum
+    fracSum %= commDenom;
+
+    cout << "Integer part: " << charSum << endl;
+    cout << "Fraction part: " << fracSum << " / " << commDenom << endl;  
+
+    addToArray(charSum, fracSum, result, len);
+    
     return true;
 }
 //--
