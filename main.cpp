@@ -41,17 +41,17 @@ int main()
     //initialize the values
     c1 = 1;
     n1 = 1;
-    d1 = 2;
+    d1 = 10;
 
     c2 = 2;
     n2 = 2;
-    d2 = 3; 
+    d2 = 10; 
 
     //if the c-string can hold at least the characteristic
     if(add(c1, n1, d1, c2, n2, d2, answer, 10))
     {
         //display string with answer 4.1666666 (cout stops printing at the null terminating character)
-        cout<<"Answer: "<<answer<<endl;
+        cout<<"Addition Answer: "<<answer<<endl;
     }
     else
     {
