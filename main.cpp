@@ -12,6 +12,8 @@ bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int
 bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 
+void addToArray(int charSum,int fracSum, char result[], int len);
+
 int main()
 {
     //this c-string, or array of 8 characters, ends with the null terminating character '\0'
@@ -140,4 +142,55 @@ bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int l
     result[6] = '\0';
     
     return true;
+}
+
+//-- Add integers to aray
+void addToArray(int charSum, int fracSum, char results[], int len) {
+    int i = 0;
+
+    // Reverse and add the characteristic part (before the decimal)
+    if (charSum == 0) {
+        results[i++] = '0';
+    } else {
+        int temp = charSum;
+        // Temporary array to store the reversed characteristic part
+        char tempArr[len];
+        int tempIndex = 0;
+        
+        while (temp > 0) {
+            tempArr[tempIndex++] = '0' + (temp % 10); // Get the last digit and convert it to a character
+            temp /= 10; // Remove the last digit
+        }
+        
+        // Copy the reversed characteristic part to the result array
+        for (int j = tempIndex - 1; j >= 0; j--) {
+            results[i++] = tempArr[j];
+        }
+    }
+
+    // Add the decimal point
+    results[i++] = '.';
+
+    // Reverse and add the fractional part (after the decimal)
+    if (fracSum == 0) {
+        results[i++] = '0';
+    } else {
+        int temp = fracSum;
+        // Temporary array to store the reversed fractional part
+        char tempArr[len];
+        int tempIndex = 0;
+
+        while (temp > 0) {
+            tempArr[tempIndex++] = '0' + (temp % 10); // Get the last digit and convert it to a character
+            temp /= 10; // Remove the last digit
+        }
+
+        // Copy the reversed fractional part to the result array
+        for (int j = tempIndex - 1; j >= 0; j--) {
+            results[i++] = tempArr[j];
+        }
+    }
+
+    // Add the null terminator at the end
+    results[i] = '\0';
 }
