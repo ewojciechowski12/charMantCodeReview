@@ -72,10 +72,17 @@ int main()
         cout<<"Error on divide"<<endl;
     }
 
+    //Test for subtract() function
     if(subtract(c1, n1, d1, c2, n2, d2, answer, 10)){
         
         cout << "Subtraction Answer: " << answer << endl;
     }
+
+    //Test for multiply() method
+    if(multiply(c1, n1, d1, c2, n2, d2, answer, 10)){
+        cout << "Multiplication Answer: " << answer << endl;
+    }
+
 
     return 0;
 } 
@@ -149,10 +156,25 @@ bool subtract(int char1, int numerator1, int denominator1, int char2, int numera
     return true;
 }
 //--
-bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+bool multiply(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 {
     //hard coded return value to make the code compile
     //you will have to come up with an algorithm to multiply the two numbers
+
+    // Convert to improper fractions
+    int newNumerator1 = (char1 * denominator1) + numerator1;
+    int newNumerator2 = (char2 * denominator2) + numerator2;
+
+    // Calculate numerator
+    int finalNumerator = newNumerator1 * newNumerator2;
+    int finalDenominator = denominator1 * denominator2;
+
+    // Convert back to mixed number
+    int charProduct = finalNumerator / finalDenominator;
+    int finalFracNum = finalNumerator % finalDenominator;
+
+    addToArray(charProduct, finalFracNum, result, len);
+
     return true;
 }
 //--
