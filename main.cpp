@@ -41,13 +41,13 @@ int main()
     int c2, n2, d2;
 
     //initialize the values
-    c1 = 1;
-    n1 = 1;
+    c1 = 2;
+    n1 = 5;
     d1 = 10;
 
-    c2 = 2;
-    n2 = 2;
-    d2 = 10; 
+    c2 = 1;
+    n2 = 25;
+    d2 = 100; 
 
     //if the c-string can hold at least the characteristic
     if(add(c1, n1, d1, c2, n2, d2, answer, 10))
@@ -64,7 +64,7 @@ int main()
     if(divide(c1, n1, d1, c2, n2, d2, answer, 10))
     {
         //display string with answer
-        cout<<"Answer: "<<answer<<endl;
+        cout<<"Divison Answer: "<<answer<<endl;
     }
     else
     {
@@ -178,17 +178,28 @@ bool multiply(int char1, int numerator1, int denominator1, int char2, int numera
     return true;
 }
 //--
-bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+bool divide(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 {
     //you will have to come up with an algorithm to divide the two numbers
-    //hard coded return value to make the main() work
-    result[0] = '0';
-    result[1] = '.';
-    result[2] = '5';
-    result[3] = '6';
-    result[4] = '2';
-    result[5] = '5';
-    result[6] = '\0';
+    
+    // Check for division by zero
+    if ((char2 == 0 && numerator2 == 0) || denominator2 == 0){
+        return false;
+    }    
+    
+    // Convert to improper fractions
+    int newNumerator1 = (char1 * denominator1) + numerator1;
+    int newNumerator2 = (char2 * denominator2) + numerator2;
+
+    // Multiply by reciprocal
+    int finalNumerator = newNumerator1 * denominator2;
+    int finalDenominator = denominator1 * newNumerator2;
+
+    // Convert back to mixed number
+    int charQuotient = finalNumerator / finalDenominator;
+    int fracQuotient = finalNumerator % finalDenominator;
+    
+    addToArray(charQuotient, fracQuotient, result, len);
     
     return true;
 }
