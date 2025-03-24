@@ -53,8 +53,8 @@ int main()
     if(add(c1, n1, d1, c2, n2, d2, answer, 10))
     {
         //display string with answer 4.1666666 (cout stops printing at the null terminating character)
-        cout<<"Addition Answer: "<<answer<<endl;
-    }
+        cout << "Addition Answer: "<< answer << endl;
+    }    
     else
     {
         //display error message
@@ -70,6 +70,11 @@ int main()
     {
         //display error message
         cout<<"Error on divide"<<endl;
+    }
+
+    if(subtract(c1, n1, d1, c2, n2, d2, answer, 10)){
+        
+        cout << "Subtraction Answer: " << answer << endl;
     }
 
     return 0;
@@ -107,18 +112,40 @@ bool add(int char1, int numerator1, int denominator1, int char2, int numerator2,
     charSum += fracSum / commDenom; // Add whole part from fraction sum
     fracSum %= commDenom;
 
-    cout << "Integer part: " << charSum << endl;
-    cout << "Fraction part: " << fracSum << " / " << commDenom << endl;  
-
+    // Add to array
     addToArray(charSum, fracSum, result, len);
     
     return true;
 }
 //--
-bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+bool subtract(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 {
     //hard coded return value to make the code compile
     //you will have to come up with an algorithm to subtract the two numbers
+    
+    // Find common denominator and scale numerators
+    int commDenom = denominator1 * denominator2;
+    int num1_scaled = numerator1 * denominator2;
+    int num2_scaled = numerator2 * denominator1;    
+
+    // Subtract Fractions
+    int fracDiff = 0;
+
+    if(num1_scaled < num2_scaled){
+        //Borrow from char1
+        num1_scaled += commDenom;
+        char1-=1;
+        fracDiff = num1_scaled - num2_scaled;        
+    }else{
+        fracDiff = num1_scaled - num2_scaled;
+    }
+
+    // Subtract characteristics
+    int charDiff = char1 - char2;
+
+    // Add to array
+    addToArray(charDiff, fracDiff, result, len);
+    
     return true;
 }
 //--
