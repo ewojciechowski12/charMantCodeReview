@@ -3,3 +3,7 @@ main
 
 # if necessary, add other entries here
 /.vs
+/charMantCodeReview/.vs
+/.idea
+/charMantCodeReview/charMantCodeReview/x64
+/charMantCodeReview/x64
