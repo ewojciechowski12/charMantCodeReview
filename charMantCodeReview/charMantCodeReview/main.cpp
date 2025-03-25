@@ -80,6 +80,13 @@ bool characteristic(const char numString[], int& c)
     c = 0;
     int decimalPoint = locateDecimalPoint(numString);
     char character = '0';
+    int powOfTen = 1;
+    for (int i = decimalPoint - 1; i >= 0; i--)
+    {
+        character = numString[i];
+        c += (character - '0') * powOfTen;
+        powOfTen *= 10;
+    }
     return true;
 }
 //--
