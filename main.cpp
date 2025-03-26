@@ -5,6 +5,8 @@ using namespace std;
 //required function prototypes
 bool characteristic(const char numString[], int& c);
 bool mantissa(const char numString[], int& numerator, int& denominator);
+int locateDecimalPoint(const char numString[]);
+int getLength(const char numString[]);
 
 bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len); 
@@ -76,16 +78,59 @@ int main()
 bool characteristic(const char numString[], int& c)
 {
     //hard coded return value to make the main() work
-    c = 123;
+    c = 0;
+    int decimalPoint = locateDecimalPoint(numString);
+    char character = '0';
+    int powOfTen = 1;
+    for (int i = decimalPoint - 1; i >= 0; i--)
+    {
+        character = numString[i];
+        c += (character - '0') * powOfTen;
+        powOfTen *= 10;
+    }
     return true;
 }
 //--
 bool mantissa(const char numString[], int& numerator, int& denominator)
 {
     //hard coded return value to make the main() work
-    numerator = 456;
-    denominator = 1000;
+    numerator = 0;
+    denominator = 0;
+    char mantissa = '0';
+    int powOfTen = 1;
+    int decimalPoint = locateDecimalPoint(numString);
+    int lengthOfArray = getLength(numString);
+    for (int i = lengthOfArray - 1; i > decimalPoint; i--)
+    {
+        mantissa = numString[i];
+        numerator += (mantissa - '0') * powOfTen;
+        powOfTen *= 10;
+    }
+    denominator = powOfTen;
+
     return true;
+}
+//--
+int locateDecimalPoint(const char numString[])
+{
+    //Locates decimal point position within the character array.
+    int index = 0;
+    while (numString[index] != '.')
+    {
+        index++;
+    }
+    return (index);
+}
+//--
+int getLength(const char numString[])
+{
+    //Returns the length of the character array.
+    int index = 0;
+    while (numString[index] != '\0')
+    {
+        index++;
+    }
+    return (index);
 }
 //--
 bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
