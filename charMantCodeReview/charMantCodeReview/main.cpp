@@ -94,8 +94,20 @@ bool characteristic(const char numString[], int& c)
 bool mantissa(const char numString[], int& numerator, int& denominator)
 {
     //hard coded return value to make the main() work
-    numerator = 456;
-    denominator = 1000;
+    numerator = 0;
+    denominator = 0;
+    char mantissa = '0';
+    int powOfTen = 1;
+    int decimalPoint = locateDecimalPoint(numString);
+    int lengthOfArray = getLength(numString);
+    for (int i = lengthOfArray - 1; i > decimalPoint; i--)
+    {
+        mantissa = numString[i];
+        numerator += (mantissa - '0') * powOfTen;
+        powOfTen *= 10;
+    }
+    denominator = powOfTen;
+
     return true;
 }
 //--
