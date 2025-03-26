@@ -6,6 +6,7 @@ using namespace std;
 bool characteristic(const char numString[], int& c);
 bool mantissa(const char numString[], int& numerator, int& denominator);
 int locateDecimalPoint(const char numString[]);
+int getLength(const char numString[]);
 
 bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
@@ -103,6 +104,17 @@ int locateDecimalPoint(const char numString[])
     //Locates decimal point position within the character array.
     int index = 0;
     while (numString[index] != '.')
+    {
+        index++;
+    }
+    return (index);
+}
+//--
+int getLength(const char numString[])
+{
+    //Returns the length of the character array.
+    int index = 0;
+    while (numString[index] != '\0')
     {
         index++;
     }
