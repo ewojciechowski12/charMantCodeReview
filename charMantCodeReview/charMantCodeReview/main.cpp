@@ -9,7 +9,7 @@ int locateDecimalPoint(const char numString[]);
 int getLength(const char numString[]);
 
 bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
-bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len); 
+bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 
 bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
@@ -18,7 +18,7 @@ int main()
 {
     //this c-string, or array of 8 characters, ends with the null terminating character '\0'
     //['1', '2', '3', '.', '4', '5', '6', '\0']
-    const char number[] = "123.456"; 
+    const char number[] = "123.456";
     int c, n, d;
 
     //if both conversions from c-string to integers can take place
@@ -47,7 +47,7 @@ int main()
 
     c2 = 2;
     n2 = 2;
-    d2 = 3; 
+    d2 = 3;
 
     //if the c-string can hold at least the characteristic
     if(add(c1, n1, d1, c2, n2, d2, answer, 10))
@@ -73,7 +73,7 @@ int main()
     }
 
     return 0;
-} 
+}
 //--
 bool characteristic(const char numString[], int& c)
 {
@@ -176,6 +176,6 @@ bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int l
     result[4] = '2';
     result[5] = '5';
     result[6] = '\0';
-    
+
     return true;
 }
