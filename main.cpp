@@ -6,11 +6,11 @@ using namespace std;
 bool characteristic(const char numString[], int& c);
 bool mantissa(const char numString[], int& numerator, int& denominator);
 
-bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
-bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len); 
+bool add(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+bool subtract(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 
-bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
-bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
+bool multiply(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+bool divide(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 
 void addToArray(int charSum,int fracSum, char result[], int len);
 
@@ -126,10 +126,7 @@ bool add(int char1, int numerator1, int denominator1, int char2, int numerator2,
 }
 //--
 bool subtract(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
-{
-    //hard coded return value to make the code compile
-    //you will have to come up with an algorithm to subtract the two numbers
-    
+{    
     // Find common denominator and scale numerators
     int commDenom = denominator1 * denominator2;
     int num1_scaled = numerator1 * denominator2;
@@ -158,9 +155,6 @@ bool subtract(int char1, int numerator1, int denominator1, int char2, int numera
 //--
 bool multiply(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 {
-    //hard coded return value to make the code compile
-    //you will have to come up with an algorithm to multiply the two numbers
-
     // Convert to improper fractions
     int newNumerator1 = (char1 * denominator1) + numerator1;
     int newNumerator2 = (char2 * denominator2) + numerator2;
@@ -180,8 +174,6 @@ bool multiply(int char1, int numerator1, int denominator1, int char2, int numera
 //--
 bool divide(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 {
-    //you will have to come up with an algorithm to divide the two numbers
-    
     // Check for division by zero
     if ((char2 == 0 && numerator2 == 0) || denominator2 == 0){
         return false;
@@ -204,7 +196,7 @@ bool divide(int char1, int numerator1, int denominator1, int char2, int numerato
     return true;
 }
 
-//-- Add integers to aray
+//-- Add integers to array
 void addToArray(int charSum, int fracSum, char results[], int len) {
     int i = 0;
 
@@ -212,19 +204,19 @@ void addToArray(int charSum, int fracSum, char results[], int len) {
     if (charSum == 0) {
         results[i++] = '0';
     } else {
-        int temp = charSum;
+        int copy_of_charSum = charSum;
         // Temporary array to store the reversed characteristic part
-        char tempArr[len];
-        int tempIndex = 0;
+        char reverseChar[len];
+        int reverseCharIndex = 0;
         
-        while (temp > 0) {
-            tempArr[tempIndex++] = '0' + (temp % 10); // Get the last digit and convert it to a character
-            temp /= 10; // Remove the last digit
+        while (copy_of_charSum > 0) {
+            reverseChar[reverseCharIndex++] = '0' + (copy_of_charSum % 10); // Get the last digit and convert it to a character
+            copy_of_charSum /= 10; // Remove the last digit
         }
         
         // Copy the reversed characteristic part to the result array
-        for (int j = tempIndex - 1; j >= 0; j--) {
-            results[i++] = tempArr[j];
+        for (int j = reverseCharIndex - 1; j >= 0; j--) {
+            results[i++] = reverseChar[j];
         }
     }
 
