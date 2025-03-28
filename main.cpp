@@ -8,11 +8,13 @@ bool mantissa(const char numString[], int& numerator, int& denominator);
 int locateDecimalPoint(const char numString[]);
 int getLength(const char numString[]);
 
-bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
-bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len); 
+bool add(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+bool subtract(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 
-bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
-bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
+bool multiply(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+bool divide(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+
+void addToArray(int charSum,int fracSum, char result[], int len);
 
 int main()
 {
@@ -41,20 +43,20 @@ int main()
     int c2, n2, d2;
 
     //initialize the values
-    c1 = 1;
-    n1 = 1;
-    d1 = 2;
+    c1 = 2;
+    n1 = 5;
+    d1 = 10;
 
-    c2 = 2;
-    n2 = 2;
-    d2 = 3; 
+    c2 = 1;
+    n2 = 25;
+    d2 = 100; 
 
     //if the c-string can hold at least the characteristic
     if(add(c1, n1, d1, c2, n2, d2, answer, 10))
     {
         //display string with answer 4.1666666 (cout stops printing at the null terminating character)
-        cout<<"Answer: "<<answer<<endl;
-    }
+        cout << "Addition Answer: "<< answer << endl;
+    }    
     else
     {
         //display error message
@@ -64,13 +66,25 @@ int main()
     if(divide(c1, n1, d1, c2, n2, d2, answer, 10))
     {
         //display string with answer
-        cout<<"Answer: "<<answer<<endl;
+        cout<<"Divison Answer: "<<answer<<endl;
     }
     else
     {
         //display error message
         cout<<"Error on divide"<<endl;
     }
+
+    //Test for subtract() function
+    if(subtract(c1, n1, d1, c2, n2, d2, answer, 10)){
+        
+        cout << "Subtraction Answer: " << answer << endl;
+    }
+
+    //Test for multiply() method
+    if(multiply(c1, n1, d1, c2, n2, d2, answer, 10)){
+        cout << "Multiplication Answer: " << answer << endl;
+    }
+
 
     return 0;
 } 
@@ -111,6 +125,8 @@ bool mantissa(const char numString[], int& numerator, int& denominator)
     return true;
 }
 //--
+
+=======
 int locateDecimalPoint(const char numString[])
 {
     //Locates decimal point position within the character array.
@@ -133,49 +149,147 @@ int getLength(const char numString[])
     return (index);
 }
 //--
-bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+bool add(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+{    
+    // Find common denominator and scale numerators
+    int commDenom = denominator1 * denominator2;
+    int num1_scaled = numerator1 * denominator2;
+    int num2_scaled = numerator2 * denominator1;
+
+    // Add characteristics
+    int charSum = char1 + char2;
+
+    // Add fractions
+    int fracSum = num1_scaled + num2_scaled;
+
+    // Normalize result
+    charSum += fracSum / commDenom; // Add whole part from fraction sum
+    fracSum %= commDenom;
+
+    // Add to array
+    addToArray(charSum, fracSum, result, len);
+    
+    return true;
+}
+//--
+bool subtract(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
+{    
+    // Find common denominator and scale numerators
+    int commDenom = denominator1 * denominator2;
+    int num1_scaled = numerator1 * denominator2;
+    int num2_scaled = numerator2 * denominator1;    
+
+    // Subtract Fractions
+    int fracDiff = 0;
+
+    if(num1_scaled < num2_scaled){
+        //Borrow from char1
+        num1_scaled += commDenom;
+        char1-=1;
+        fracDiff = num1_scaled - num2_scaled;        
+    }else{
+        fracDiff = num1_scaled - num2_scaled;
+    }
+
+    // Subtract characteristics
+    int charDiff = char1 - char2;
+
+    // Add to array
+    addToArray(charDiff, fracDiff, result, len);
+    
+    return true;
+}
+//--
+bool multiply(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 {
-    //you will have to come up with an algorithm to add the two numbers
-    //hard coded return value to make the main() work
-    result[0] = '4';
-    result[1] = '.';
-    result[2] = '1';
-    result[3] = '6';
-    result[4] = '6';
-    result[5] = '6';
-    result[6] = '6';
-    result[7] = '6';
-    result[8] = '6';
-    result[9] = '\0';
+    // Convert to improper fractions
+    int newNumerator1 = (char1 * denominator1) + numerator1;
+    int newNumerator2 = (char2 * denominator2) + numerator2;
+
+    // Calculate numerator
+    int finalNumerator = newNumerator1 * newNumerator2;
+    int finalDenominator = denominator1 * denominator2;
+
+    // Convert back to mixed number
+    int charProduct = finalNumerator / finalDenominator;
+    int finalFracNum = finalNumerator % finalDenominator;
+
+    addToArray(charProduct, finalFracNum, result, len);
 
     return true;
 }
 //--
-bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+bool divide(int char1, int numerator1, int denominator1, int char2, int numerator2, int denominator2, char result[], int len)
 {
-    //hard coded return value to make the code compile
-    //you will have to come up with an algorithm to subtract the two numbers
-    return true;
-}
-//--
-bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
-{
-    //hard coded return value to make the code compile
-    //you will have to come up with an algorithm to multiply the two numbers
-    return true;
-}
-//--
-bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
-{
-    //you will have to come up with an algorithm to divide the two numbers
-    //hard coded return value to make the main() work
-    result[0] = '0';
-    result[1] = '.';
-    result[2] = '5';
-    result[3] = '6';
-    result[4] = '2';
-    result[5] = '5';
-    result[6] = '\0';
+    // Check for division by zero
+    if ((char2 == 0 && numerator2 == 0) || denominator2 == 0){
+        return false;
+    }    
+    
+    // Convert to improper fractions
+    int newNumerator1 = (char1 * denominator1) + numerator1;
+    int newNumerator2 = (char2 * denominator2) + numerator2;
+
+    // Multiply by reciprocal
+    int finalNumerator = newNumerator1 * denominator2;
+    int finalDenominator = denominator1 * newNumerator2;
+
+    // Convert back to mixed number
+    int charQuotient = finalNumerator / finalDenominator;
+    int fracQuotient = finalNumerator % finalDenominator;
+    
+    addToArray(charQuotient, fracQuotient, result, len);
     
     return true;
+}
+
+//-- Add integers to array
+void addToArray(int charSum, int fracSum, char results[], int len) {
+    int i = 0;
+
+    // Reverse and add the characteristic part (before the decimal)
+    if (charSum == 0) {
+        results[i++] = '0';
+    } else {
+        int copy_of_charSum = charSum;
+        // Temporary array to store the reversed characteristic part
+        char reverseChar[len];
+        int reverseCharIndex = 0;
+        
+        while (copy_of_charSum > 0) {
+            reverseChar[reverseCharIndex++] = '0' + (copy_of_charSum % 10); // Get the last digit and convert it to a character
+            copy_of_charSum /= 10; // Remove the last digit
+        }
+        
+        // Copy the reversed characteristic part to the result array
+        for (int j = reverseCharIndex - 1; j >= 0; j--) {
+            results[i++] = reverseChar[j];
+        }
+    }
+
+    // Add the decimal point
+    results[i++] = '.';
+
+    // Reverse and add the fractional part (after the decimal)
+    if (fracSum == 0) {
+        results[i++] = '0';
+    } else {
+        int temp = fracSum;
+        // Temporary array to store the reversed fractional part
+        char tempArr[len];
+        int tempIndex = 0;
+
+        while (temp > 0) {
+            tempArr[tempIndex++] = '0' + (temp % 10); // Get the last digit and convert it to a character
+            temp /= 10; // Remove the last digit
+        }
+
+        // Copy the reversed fractional part to the result array
+        for (int j = tempIndex - 1; j >= 0; j--) {
+            results[i++] = tempArr[j];
+        }
+    }
+
+    // Add the null terminator at the end
+    results[i] = '\0';
 }
